@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMath", ".\GMath\GMath.csproj", "{9B6FF3AA-E027-4BDF-A534-22AEBA3AB50F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMath.CodeGeneration", ".\GMath.CodeGeneration\GMath.CodeGeneration.csproj", "{6FC55BF8-A72B-478D-8150-82A3C3DD21BA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B6FF3AA-E027-4BDF-A534-22AEBA3AB50F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B6FF3AA-E027-4BDF-A534-22AEBA3AB50F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B6FF3AA-E027-4BDF-A534-22AEBA3AB50F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B6FF3AA-E027-4BDF-A534-22AEBA3AB50F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FC55BF8-A72B-478D-8150-82A3C3DD21BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FC55BF8-A72B-478D-8150-82A3C3DD21BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FC55BF8-A72B-478D-8150-82A3C3DD21BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FC55BF8-A72B-478D-8150-82A3C3DD21BA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F2086E94-1993-4E22-B996-8A338E96A534}
+	EndGlobalSection
+EndGlobal
