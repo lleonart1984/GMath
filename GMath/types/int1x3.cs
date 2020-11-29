@@ -15,6 +15,8 @@ public struct int1x3{
 		this._m02=_m02;
 	}
 	public int1x3(int v):this(v,v,v){}
+	public static implicit operator int3(int1x3 m) { return new int3(m._m00, m._m01, m._m02); }
+	public static implicit operator int1x3(int3 v) { return new int1x3(v.x, v.y, v.z); }
 	public static explicit operator int1x1(int1x3 m) { return new int1x1(m._m00); }
 	public static explicit operator int1x2(int1x3 m) { return new int1x2(m._m00, m._m01); }
 	public static implicit operator int1x3(int v) { return new int1x3(v); }

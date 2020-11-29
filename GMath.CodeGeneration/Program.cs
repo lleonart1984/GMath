@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,12 +8,15 @@ namespace GMath.CodeGeneration
 {
     class Program
     {
-
+        static string NameSpace = "GMath";
         enum VectorType
         {
             Float,
             Integer
         }
+
+        #region Type Generation
+
         static string[] VectorComponents = { "x", "y", "z", "w" };
 
         static string TypeName(VectorType type)
@@ -25,7 +29,13 @@ namespace GMath.CodeGeneration
             }
         }
 
-        static string NameSpace = "GMath";
+        static bool CanCastImplicit (VectorType f, VectorType t)
+        {
+            if (t == VectorType.Integer)
+                return true;
+
+            return false;
+        }
 
         static string CodeForVectorType(VectorType type, int components)
         {
@@ -104,7 +114,7 @@ namespace GMath.CodeGeneration
                         components,
                         typeName,
                         string.Join(',', Enumerable.Range(0, components).Select(c => string.Format("({0})v.{1}", otherTypeName, VectorComponents[c]))),
-                         "explicit");
+                        CanCastImplicit(type, otherType) ? "implicit":"explicit");
                 }
 
             var unaryOperators = Enumerable.Empty<string>();
@@ -219,6 +229,13 @@ namespace GMath.CodeGeneration
                     rows, cols,
                     string.Join(',', Enumerable.Range(0, rows*cols).Select(c => "v")));
 
+            if (rows == 1) // Can convert to and from a vector
+            {
+                code.AppendFormat("\tpublic static implicit operator {0}{1}({0}1x{1} m) {{ return new {0}{1}({2}); }}\n",
+                                            typeName, cols, string.Join(", ", Enumerable.Range(0, cols).Select(k => string.Format("m.{0}", MatrixComponents[0, k]))));
+                code.AppendFormat("\tpublic static implicit operator {0}1x{1}({0}{1} v) {{ return new {0}1x{1}({2}); }}\n",
+                                            typeName, cols, string.Join(", ", Enumerable.Range(0, cols).Select(k => string.Format("v.{0}", VectorComponents[k]))));
+            }
             // Explicit conversions (Demotions)
             for (int r = 1; r <= rows; r++)
                 for (int c = 1; c <= cols; c++)
@@ -241,7 +258,7 @@ namespace GMath.CodeGeneration
                         rows, cols,
                         typeName,
                         string.Join(',', Enumerable.Range(0, rows*cols).Select(c => string.Format("({0})v.{1}", otherTypeName, MatrixComponents[c/cols, c%cols]))),
-                         "explicit");
+                        CanCastImplicit(type, otherType) ? "implicit" : "explicit");
                 }
 
             var unaryOperators = Enumerable.Empty<string>();
@@ -304,6 +321,375 @@ namespace GMath.CodeGeneration
             return code.ToString();
         }
 
+        #endregion
+
+        #region Functions Generation
+
+        static string CodeForFunction(string functionName, string type, int args, string returnExp, bool statement = false)
+        {
+            string[] parameters = new string[] { };
+            switch (args)
+            {
+                case 1: parameters = new string[] { "v" }; break;
+                case 2: parameters = new string[] { "a", "b" }; break;
+                case 3: parameters = new string[] { "a", "b", "c" }; break;
+            }
+            string parametersDec = string.Join(", ", parameters.Select(p => type + " " + p));
+            return string.Format(
+                statement ?
+                "\tpublic static {0} {1}({2}) {{ {3} }}" :
+                "\tpublic static {0} {1}({2}) {{ return {3}; }}",
+                type,
+                functionName,
+                parametersDec,
+                string.Format(returnExp, (object[])parameters)
+                );
+        }
+
+        static string CodeForFunctionInAllTypes(string functionName, string returnExp, int args = 1, bool statement = false)
+        {
+            StringBuilder code = new StringBuilder();
+
+            code.AppendLine("\t#region " + functionName);
+
+            code.AppendLine(CodeForFunction(functionName, "float", args, returnExp, statement));
+
+            for (int c = 1; c <= 4; c++)
+                code.AppendLine(CodeForFunction(functionName, "float" + c, args, returnExp, statement));
+          
+            for (int r = 1; r <= 4; r++)
+                for (int c = 1; c <= 4; c++)
+                    code.AppendLine(CodeForFunction(functionName, "float" + r + "x" + c, args, returnExp, statement));
+
+            code.AppendLine("\t#endregion");
+            code.AppendLine();
+
+            return code.ToString();
+        }
+
+        static string CodeForFunctionInAllVectors(string functionName, string returnExp, int args = 1)
+        {
+            StringBuilder code = new StringBuilder();
+
+            code.AppendLine("\t#region " + functionName);
+
+            for (int c = 1; c <= 4; c++)
+                code.AppendLine(CodeForFunction(functionName, "float" + c, args, returnExp));
+
+            code.AppendLine("\t#endregion");
+            code.AppendLine();
+
+            return code.ToString();
+        }
+
+        static string CodeForComponentwiseFunction(string functionName, string type, int args, int totalComponents, Func<string[], int, string> perComponentExp)
+        {
+            string[] parameters = new string[] { };
+            switch (args)
+            {
+                case 1: parameters = new string[] { "v" }; break;
+                case 2: parameters = new string[] { "a", "b" }; break;
+                case 3: parameters = new string[] { "a", "b", "c" }; break;
+            }
+            string parametersDec = string.Join(", ", parameters.Select(p => type + " " + p));
+            return string.Format("\tpublic static {0} {1}({2}) {{ return new {0}({3}); }}",
+                type,
+                functionName,
+                parametersDec,
+                string.Join(", ", Enumerable.Range(0, totalComponents).Select(c => perComponentExp(parameters, c)))
+                );
+        }
+        static string CodeForFunctionInFloat(string functionName, string returnExp, int args)
+        {
+            StringBuilder code = new StringBuilder();
+
+            code.AppendLine(CodeForFunction(functionName, "float", args, returnExp));
+           
+            return code.ToString();
+        }
+        static string CodeForComponentwiseFunctionInVectors(string functionName, string perComponentExp, int args)
+        {
+            StringBuilder code = new StringBuilder();
+
+            for (int c = 1; c <= 4; c++)
+                code.AppendLine(CodeForComponentwiseFunction(functionName, "float" + c, args, c, (p, i) => string.Format(perComponentExp, (object[])p.Select(par=>string.Format("{0}.{1}", par, VectorComponents[i])).ToArray())));
+
+            return code.ToString();
+        }
+        static string CodeForComponentwiseFunctionInMatrices(string functionName, string perComponentExp, int args)
+        {
+            StringBuilder code = new StringBuilder();
+
+            for (int r = 1; r <= 4; r++)
+                for (int c = 1; c <= 4; c++)
+                    code.AppendLine(CodeForComponentwiseFunction(functionName, "float" + r + "x" + c, args, r * c,
+                        (p, i) => string.Format(perComponentExp, (object[])p.Select(par => string.Format("{0}.{1}", par, MatrixComponents[i / c, i % c])).ToArray())));
+
+            return code.ToString();
+        }
+
+        static string CodeForConstructor(string typename, IEnumerable<string> parameters)
+        {
+            string args = string.Join(", ", parameters.Select(p => "float " + p));
+            return string.Format("\tpublic static {0} {0}({1}) {{ return new {0}({2}); }}\n",
+                typename,
+                args,
+                string.Join(", ", parameters)
+                );
+        }
+
+        static string CodeForConstructorFunctionInAllTypes()
+        {
+            StringBuilder code = new StringBuilder();
+            code.AppendLine("\t#region Constructors");
+
+            for (int c = 1; c <= 4; c++)
+                code.AppendLine(CodeForConstructor("float" + c, VectorComponents.Take(c)));
+
+            for (int r = 1; r <= 4; r++)
+                for (int c = 1; c <= 4; c++)
+                {
+                    List<string> submatrixArgs = new List<string>();
+                    for (int i = 0; i < r; i++)
+                        for (int j = 0; j < c; j++)
+                            submatrixArgs.Add(MatrixComponents[i, j]);
+                    code.AppendLine(CodeForConstructor("float" + r + "x" + c, submatrixArgs));
+                }
+            code.AppendLine("\t#endregion");
+            code.AppendLine();
+            return code.ToString();
+        }
+
+        static string CodeForDot(string functionName)
+        {
+            StringBuilder code = new StringBuilder();
+
+            code.AppendLine("\t#region " + functionName);
+
+            for (int c = 1; c <= 4; c++)
+            {
+                code.AppendFormat("\tpublic static float {2}(float{0} a, float{0} b) {{ return {1}; }}\n", c,
+                    string.Join(" + ", Enumerable.Range(0, c).Select(i => string.Format("a.{0} * b.{0}", VectorComponents[i]))),
+                    functionName);
+            }
+            code.AppendLine("\t#endregion");
+            code.AppendLine();
+            return code.ToString();
+        }
+
+        static string CodeForAny(string functionName)
+        {
+            StringBuilder code = new StringBuilder();
+
+            code.AppendLine("\t#region " + functionName);
+
+            for (int c = 1; c <= 4; c++)
+            {
+                code.AppendFormat("\tpublic static bool {2}(float{0} v) {{ return {1}; }}\n", c,
+                    string.Join(" || ", Enumerable.Range(0, c).Select(i => string.Format("(v.{0} != 0)", VectorComponents[i]))),
+                    functionName);
+            }
+
+            for (int r = 1; r <= 4; r++)
+                for (int c = 1; c <= 4; c++)
+                {
+                    code.AppendFormat("\tpublic static bool {3}(float{0}x{1} m) {{ return {2}; }}\n", r, c,
+                        string.Join(" || ", Enumerable.Range(0, r * c).Select(i => string.Format("(m.{0} != 0)", MatrixComponents[i / c, i % c]))),
+                        functionName);
+                }
+
+            code.AppendLine("\t#endregion");
+            code.AppendLine();
+
+            return code.ToString();
+        }
+
+        static string CodeForAll(string functionName)
+        {
+            StringBuilder code = new StringBuilder();
+
+            code.AppendLine("\t#region " + functionName);
+
+            for (int c = 1; c <= 4; c++)
+            {
+                code.AppendFormat("\tpublic static bool {2}(float{0} v) {{ return {1}; }}\n", c,
+                    string.Join(" && ", Enumerable.Range(0, c).Select(i => string.Format("(v.{0} != 0)", VectorComponents[i]))),
+                    functionName);
+            }
+
+            for (int r = 1; r <= 4; r++)
+                for (int c = 1; c <= 4; c++)
+                {
+                    code.AppendFormat("\tpublic static bool {3}(float{0}x{1} m) {{ return {2}; }}\n", r, c,
+                        string.Join(" && ", Enumerable.Range(0, r * c).Select(i => string.Format("(m.{0} != 0)", MatrixComponents[i / c, i % c]))),
+                        functionName);
+                }
+            code.AppendLine("\t#endregion");
+            code.AppendLine();
+            return code.ToString();
+        }
+
+        static string CodeForAbsDot(string functionName)
+        {
+            StringBuilder code = new StringBuilder();
+
+            code.AppendLine("\t#region " + functionName);
+
+            for (int c = 1; c <= 4; c++)
+            {
+                code.AppendFormat("\tpublic static float {2}(float{0} a, float{0} b) {{ return abs({1}); }}\n", c,
+                    string.Join(" + ", Enumerable.Range(0, c).Select(i => string.Format("a.{0} * b.{0}", VectorComponents[i]))),
+                    functionName);
+            }
+            code.AppendLine("\t#endregion");
+            code.AppendLine();
+            return code.ToString();
+        }
+
+        static string CodeForMul(string functionName)
+        {
+            StringBuilder code = new StringBuilder();
+            code.AppendLine("\t#region " + functionName);
+
+            for (int r = 1; r <= 4; r++)
+                for(int k = 1; k <= 4; k++)
+                    for(int c = 1; c <= 4; c++)
+                    {
+                        // generating the multiplication code for the mul
+                        // rxk * kxc = rxc
+
+                        code.AppendFormat("\tpublic static float{0}x{2} {4}(float{0}x{1} a, float{1}x{2} b) {{ return new float{0}x{2}({3}); }}\n",
+                            r, k, c, 
+                            string.Join(", ", Enumerable.Range(0, r*c).Select(
+                                i =>
+                                {
+                                    int fr = i / c;
+                                    int fc = i % c;
+                                    return string.Join("+", Enumerable.Range(0, k).Select(o => string.Format("a.{0}*b.{1}", MatrixComponents[fr, o], MatrixComponents[o, fc])));
+                                }
+                                )), functionName);
+                    }
+
+            code.AppendLine("\t#endregion");
+            code.AppendLine();
+
+            return code.ToString();
+        }
+
+        static string CodeForTranspose(string functionName)
+        {
+            StringBuilder code = new StringBuilder();
+            code.AppendLine("\t#region " + functionName);
+
+            for (int r = 1; r <= 4; r++)
+                for (int c = 1; c <= 4; c++)
+                {
+                    // generating the multiplication code for the mul
+                    // rxk * kxc = rxc
+
+                    code.AppendFormat("\tpublic static float{1}x{0} {3}(float{0}x{1} a) {{ return new float{1}x{0}({2}); }}\n",
+                        c, r,
+                        string.Join(", ", Enumerable.Range(0, r * c).Select(
+                            i =>
+                            {
+                                int fr = i / c;
+                                int fc = i % c;
+                                return string.Format("a.{0}", MatrixComponents[fc, fr]);
+                            }
+                            )), functionName);
+                }
+
+            code.AppendLine("\t#endregion");
+            code.AppendLine();
+
+            return code.ToString();
+        }
+
+
+        static string CodeForComponentwiseFunction(string functionName, string perComponentExp, int args = 1)
+        {
+            StringBuilder code = new StringBuilder();
+
+            code.AppendLine("\t#region " + functionName);
+
+            code.AppendLine(CodeForFunctionInFloat(functionName, perComponentExp, args));
+            code.AppendLine(CodeForComponentwiseFunctionInVectors(functionName, perComponentExp, args));
+            code.AppendLine(CodeForComponentwiseFunctionInMatrices(functionName, perComponentExp, args));
+
+            code.AppendLine("\t#endregion");
+            code.AppendLine();
+
+            return code.ToString();
+        }
+
+
+        static string CodeForFunctions()
+        {
+            StringBuilder code = new StringBuilder();
+            
+            code.AppendLine("using System;");
+
+            code.AppendLine("namespace " + NameSpace + " {");
+
+            code.AppendLine("public static partial class Gfx {");
+
+            code.AppendLine(CodeForComponentwiseFunction("abs", "(float)Math.Abs({0})"));
+            code.AppendLine(CodeForAbsDot("absdot"));
+            code.AppendLine(CodeForComponentwiseFunction("acos", "(float)Math.Acos({0})"));
+            code.AppendLine(CodeForAll("all"));
+            code.AppendLine(CodeForAny("any"));
+            code.AppendLine(CodeForComponentwiseFunction("asin", "(float)Math.Asin({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("atan", "(float)Math.Atan({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("atan2", "(float)Math.Atan2({0}, {1})", 2));
+            code.AppendLine(CodeForComponentwiseFunction("ceil", "(float)Math.Ceiling({0})"));
+            code.AppendLine(CodeForFunctionInAllTypes("clamp", "max({1}, min({2}, {0}))", 3));
+            code.AppendLine(CodeForComponentwiseFunction("cos", "(float)Math.Cos({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("cosh", "(float)Math.Cosh({0})"));
+            code.AppendLine(CodeForDot("dot"));
+            code.AppendLine(CodeForComponentwiseFunction("min", "{0}<{1}?{0}:{1}", 2));
+            code.AppendLine(CodeForComponentwiseFunction("max", "{0}>{1}?{0}:{1}", 2));
+            code.AppendLine(CodeForComponentwiseFunction("degrees", "(float)({0}*180.0/Math.PI)", 1));
+            code.AppendLine(CodeForFunctionInAllVectors("length", "(float)Math.Sqrt(dot({0}, {0}))", 1));
+            code.AppendLine(CodeForFunctionInAllVectors("sqrlength", "dot({0}, {0})", 1));
+            code.AppendLine(CodeForFunctionInAllVectors("distance", "length({0} - {1})", 2));
+            code.AppendLine(CodeForFunctionInAllVectors("sqrdistance", "sqrlength({0} - {1})", 2));
+            code.AppendLine(CodeForComponentwiseFunction("exp", "(float)Math.Exp({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("exp2", "(float)Math.Pow(2, {0})"));
+            code.AppendLine(CodeForComponentwiseFunction("floor", "(float)Math.Floor({0})"));
+            code.AppendLine(CodeForFunctionInAllTypes("fmod", "{0} % {1}", 2));
+            code.AppendLine(CodeForFunctionInAllTypes("frac", "{0} % 1", 1));
+            code.AppendLine(CodeForFunctionInAllTypes("ldexp", "{0} * exp2({1})", 2));
+            code.AppendLine(CodeForFunctionInAllTypes("lerp", "{0} + {2}*({1} - {0})", 3));
+            code.AppendLine(CodeForComponentwiseFunction("log", "(float)Math.Log({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("log10", "(float)Math.Log10({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("log2", "(float)Math.Log({0}, 2)"));
+            code.AppendLine(CodeForMul("mul"));
+            code.AppendLine(CodeForFunctionInAllVectors("normalize", "any({0})?{0}/length({0}) : 0", 1));
+            code.AppendLine(CodeForComponentwiseFunction("pow", "(float)Math.Pow({0},{1})", 2));
+            code.AppendLine(CodeForComponentwiseFunction("radians", "(float)({0}*Math.PI/180)", 1));
+            code.AppendLine(CodeForComponentwiseFunction("round", "(float)Math.Round({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("rsqrt", "(float)(1.0/Math.Sqrt({0}))"));
+            code.AppendLine(CodeForFunctionInAllTypes("saturate", "max(0, min(1, {0}))", 1));
+            code.AppendLine(CodeForComponentwiseFunction("sign", "(float)Math.Sign({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("sin", "(float)Math.Sin({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("sinh", "(float)Math.Sinh({0})"));
+            code.AppendLine(CodeForFunctionInAllTypes("smoothstep", "var t = saturate(({2} - {0})/({1} - {0})); return t*t*(3 - 2 * t); ", 3, true));
+            code.AppendLine(CodeForComponentwiseFunction("sqrt", "(float)Math.Sqrt({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("step", "{0} >= {1} ? 1 : 0", 2));
+            code.AppendLine(CodeForComponentwiseFunction("tan", "(float)Math.Tan({0})"));
+            code.AppendLine(CodeForComponentwiseFunction("tanh", "(float)Math.Tanh({0})"));
+            code.AppendLine(CodeForTranspose("transpose"));
+
+            code.AppendLine(CodeForConstructorFunctionInAllTypes());
+
+            code.AppendLine("}");
+
+            code.AppendLine("}");
+
+            return code.ToString();
+        }
+
+        #endregion
 
         static void Main(string[] args)
         {
@@ -316,6 +702,8 @@ namespace GMath.CodeGeneration
                     for (int c = 1; c <= 4; c++)
                         File.WriteAllText(TypeName(type) + "" + r + "x" + c + ".cs", CodeForMatrixType(type, r, c));
             }
+
+            File.WriteAllText("Functions.cs", CodeForFunctions());
         }
     }
 }

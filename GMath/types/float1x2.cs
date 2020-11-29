@@ -13,6 +13,8 @@ public struct float1x2{
 		this._m01=_m01;
 	}
 	public float1x2(float v):this(v,v){}
+	public static implicit operator float2(float1x2 m) { return new float2(m._m00, m._m01); }
+	public static implicit operator float1x2(float2 v) { return new float1x2(v.x, v.y); }
 	public static explicit operator float1x1(float1x2 m) { return new float1x1(m._m00); }
 	public static implicit operator float1x2(float v) { return new float1x2(v); }
 	public static explicit operator int1x2(float1x2 v) { return new int1x2((int)v._m00,(int)v._m01); }
