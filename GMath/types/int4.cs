@@ -32,7 +32,7 @@ public struct int4{
 	public static explicit operator int2(int4 v) { return new int2(v.x, v.y); }
 	public static explicit operator int3(int4 v) { return new int3(v.x, v.y, v.z); }
 	public static implicit operator int4(int v) { return new int4(v); }
-	public static explicit operator float4(int4 v) { return new float4((float)v.x,(float)v.y,(float)v.z,(float)v.w); }
+	public static implicit operator float4(int4 v) { return new float4((float)v.x,(float)v.y,(float)v.z,(float)v.w); }
 	public static int4 operator -(int4 a) { return new int4(-a.x,-a.y,-a.z,-a.w); }
 	public static int4 operator +(int4 a) { return new int4(+a.x,+a.y,+a.z,+a.w); }
 	public static int4 operator ~(int4 a) { return new int4(~a.x,~a.y,~a.z,~a.w); }

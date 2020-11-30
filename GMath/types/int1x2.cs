@@ -17,7 +17,7 @@ public struct int1x2{
 	public static implicit operator int1x2(int2 v) { return new int1x2(v.x, v.y); }
 	public static explicit operator int1x1(int1x2 m) { return new int1x1(m._m00); }
 	public static implicit operator int1x2(int v) { return new int1x2(v); }
-	public static explicit operator float1x2(int1x2 v) { return new float1x2((float)v._m00,(float)v._m01); }
+	public static implicit operator float1x2(int1x2 v) { return new float1x2((float)v._m00,(float)v._m01); }
 	public static int1x2 operator -(int1x2 a) { return new int1x2(-a._m00,-a._m01); }
 	public static int1x2 operator +(int1x2 a) { return new int1x2(+a._m00,+a._m01); }
 	public static int1x2 operator ~(int1x2 a) { return new int1x2(~a._m00,~a._m01); }

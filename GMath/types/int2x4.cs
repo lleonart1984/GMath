@@ -34,7 +34,7 @@ public struct int2x4{
 	public static explicit operator int2x2(int2x4 m) { return new int2x2(m._m00, m._m01, m._m10, m._m11); }
 	public static explicit operator int2x3(int2x4 m) { return new int2x3(m._m00, m._m01, m._m02, m._m10, m._m11, m._m12); }
 	public static implicit operator int2x4(int v) { return new int2x4(v); }
-	public static explicit operator float2x4(int2x4 v) { return new float2x4((float)v._m00,(float)v._m01,(float)v._m02,(float)v._m03,(float)v._m10,(float)v._m11,(float)v._m12,(float)v._m13); }
+	public static implicit operator float2x4(int2x4 v) { return new float2x4((float)v._m00,(float)v._m01,(float)v._m02,(float)v._m03,(float)v._m10,(float)v._m11,(float)v._m12,(float)v._m13); }
 	public static int2x4 operator -(int2x4 a) { return new int2x4(-a._m00,-a._m01,-a._m02,-a._m03,-a._m10,-a._m11,-a._m12,-a._m13); }
 	public static int2x4 operator +(int2x4 a) { return new int2x4(+a._m00,+a._m01,+a._m02,+a._m03,+a._m10,+a._m11,+a._m12,+a._m13); }
 	public static int2x4 operator ~(int2x4 a) { return new int2x4(~a._m00,~a._m01,~a._m02,~a._m03,~a._m10,~a._m11,~a._m12,~a._m13); }

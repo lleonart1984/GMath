@@ -20,7 +20,7 @@ public struct int2{
 	public int2(int v):this(v,v){}
 	public static explicit operator int1(int2 v) { return new int1(v.x); }
 	public static implicit operator int2(int v) { return new int2(v); }
-	public static explicit operator float2(int2 v) { return new float2((float)v.x,(float)v.y); }
+	public static implicit operator float2(int2 v) { return new float2((float)v.x,(float)v.y); }
 	public static int2 operator -(int2 a) { return new int2(-a.x,-a.y); }
 	public static int2 operator +(int2 a) { return new int2(+a.x,+a.y); }
 	public static int2 operator ~(int2 a) { return new int2(~a.x,~a.y); }

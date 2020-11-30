@@ -48,7 +48,7 @@ public struct int4x3{
 	public static explicit operator int4x1(int4x3 m) { return new int4x1(m._m00, m._m10, m._m20, m._m30); }
 	public static explicit operator int4x2(int4x3 m) { return new int4x2(m._m00, m._m01, m._m10, m._m11, m._m20, m._m21, m._m30, m._m31); }
 	public static implicit operator int4x3(int v) { return new int4x3(v); }
-	public static explicit operator float4x3(int4x3 v) { return new float4x3((float)v._m00,(float)v._m01,(float)v._m02,(float)v._m10,(float)v._m11,(float)v._m12,(float)v._m20,(float)v._m21,(float)v._m22,(float)v._m30,(float)v._m31,(float)v._m32); }
+	public static implicit operator float4x3(int4x3 v) { return new float4x3((float)v._m00,(float)v._m01,(float)v._m02,(float)v._m10,(float)v._m11,(float)v._m12,(float)v._m20,(float)v._m21,(float)v._m22,(float)v._m30,(float)v._m31,(float)v._m32); }
 	public static int4x3 operator -(int4x3 a) { return new int4x3(-a._m00,-a._m01,-a._m02,-a._m10,-a._m11,-a._m12,-a._m20,-a._m21,-a._m22,-a._m30,-a._m31,-a._m32); }
 	public static int4x3 operator +(int4x3 a) { return new int4x3(+a._m00,+a._m01,+a._m02,+a._m10,+a._m11,+a._m12,+a._m20,+a._m21,+a._m22,+a._m30,+a._m31,+a._m32); }
 	public static int4x3 operator ~(int4x3 a) { return new int4x3(~a._m00,~a._m01,~a._m02,~a._m10,~a._m11,~a._m12,~a._m20,~a._m21,~a._m22,~a._m30,~a._m31,~a._m32); }

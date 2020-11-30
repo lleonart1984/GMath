@@ -31,7 +31,7 @@ namespace GMath.CodeGeneration
 
         static bool CanCastImplicit (VectorType f, VectorType t)
         {
-            if (t == VectorType.Integer)
+            if (t == VectorType.Float)
                 return true;
 
             return false;
@@ -325,7 +325,7 @@ namespace GMath.CodeGeneration
 
         #region Functions Generation
 
-        static string CodeForFunction(string functionName, string type, int args, string returnExp, bool statement = false)
+        static string CodeForFunction(string functionName, string type, int args, string returnExp, bool statement = false, bool returnFloat = false)
         {
             string[] parameters = new string[] { };
             switch (args)
@@ -339,7 +339,7 @@ namespace GMath.CodeGeneration
                 statement ?
                 "\tpublic static {0} {1}({2}) {{ {3} }}" :
                 "\tpublic static {0} {1}({2}) {{ return {3}; }}",
-                type,
+                returnFloat ? "float" : type,
                 functionName,
                 parametersDec,
                 string.Format(returnExp, (object[])parameters)
@@ -367,14 +367,14 @@ namespace GMath.CodeGeneration
             return code.ToString();
         }
 
-        static string CodeForFunctionInAllVectors(string functionName, string returnExp, int args = 1)
+        static string CodeForFunctionInAllVectors(string functionName, string returnExp, int args = 1, bool floatReturn = false)
         {
             StringBuilder code = new StringBuilder();
 
             code.AppendLine("\t#region " + functionName);
 
             for (int c = 1; c <= 4; c++)
-                code.AppendLine(CodeForFunction(functionName, "float" + c, args, returnExp));
+                code.AppendLine(CodeForFunction(functionName, "float" + c, args, returnExp, false, floatReturn));
 
             code.AppendLine("\t#endregion");
             code.AppendLine();
@@ -438,6 +438,20 @@ namespace GMath.CodeGeneration
                 );
         }
 
+        static string CodeForRowConstructor(string typename, int r, int c)
+        {
+            string args = string.Join(", ", Enumerable.Range(0, r).Select(p => "float"+c+" r" + p));
+            List<string> parameters = new List<string>();
+            for (int i = 0; i < r; i++)
+                for (int j = 0; j < c; j++)
+                    parameters.Add("r" + i + "." + VectorComponents[j]);
+            return string.Format("\tpublic static {0} {0}({1}) {{ return new {0}({2}); }}\n",
+                typename,
+                args,
+                string.Join(", ", parameters)
+                );
+        }
+
         static string CodeForConstructorFunctionInAllTypes()
         {
             StringBuilder code = new StringBuilder();
@@ -454,6 +468,7 @@ namespace GMath.CodeGeneration
                         for (int j = 0; j < c; j++)
                             submatrixArgs.Add(MatrixComponents[i, j]);
                     code.AppendLine(CodeForConstructor("float" + r + "x" + c, submatrixArgs));
+                    code.AppendLine(CodeForRowConstructor("float" + r + "x" + c, r, c));
                 }
             code.AppendLine("\t#endregion");
             code.AppendLine();
@@ -649,10 +664,10 @@ namespace GMath.CodeGeneration
             code.AppendLine(CodeForComponentwiseFunction("min", "{0}<{1}?{0}:{1}", 2));
             code.AppendLine(CodeForComponentwiseFunction("max", "{0}>{1}?{0}:{1}", 2));
             code.AppendLine(CodeForComponentwiseFunction("degrees", "(float)({0}*180.0/Math.PI)", 1));
-            code.AppendLine(CodeForFunctionInAllVectors("length", "(float)Math.Sqrt(dot({0}, {0}))", 1));
-            code.AppendLine(CodeForFunctionInAllVectors("sqrlength", "dot({0}, {0})", 1));
-            code.AppendLine(CodeForFunctionInAllVectors("distance", "length({0} - {1})", 2));
-            code.AppendLine(CodeForFunctionInAllVectors("sqrdistance", "sqrlength({0} - {1})", 2));
+            code.AppendLine(CodeForFunctionInAllVectors("length", "(float)Math.Sqrt(dot({0}, {0}))", 1, floatReturn: true));
+            code.AppendLine(CodeForFunctionInAllVectors("sqrlength", "dot({0}, {0})", 1, floatReturn: true));
+            code.AppendLine(CodeForFunctionInAllVectors("distance", "length({0} - {1})", 2, floatReturn: true));
+            code.AppendLine(CodeForFunctionInAllVectors("sqrdistance", "sqrlength({0} - {1})", 2, floatReturn: true));
             code.AppendLine(CodeForComponentwiseFunction("exp", "(float)Math.Exp({0})"));
             code.AppendLine(CodeForComponentwiseFunction("exp2", "(float)Math.Pow(2, {0})"));
             code.AppendLine(CodeForComponentwiseFunction("floor", "(float)Math.Floor({0})"));

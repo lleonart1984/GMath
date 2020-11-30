@@ -16,7 +16,7 @@ public struct int2x1{
 	public int2x1(int v):this(v,v){}
 	public static explicit operator int1x1(int2x1 m) { return new int1x1(m._m00); }
 	public static implicit operator int2x1(int v) { return new int2x1(v); }
-	public static explicit operator float2x1(int2x1 v) { return new float2x1((float)v._m00,(float)v._m10); }
+	public static implicit operator float2x1(int2x1 v) { return new float2x1((float)v._m00,(float)v._m10); }
 	public static int2x1 operator -(int2x1 a) { return new int2x1(-a._m00,-a._m10); }
 	public static int2x1 operator +(int2x1 a) { return new int2x1(+a._m00,+a._m10); }
 	public static int2x1 operator ~(int2x1 a) { return new int2x1(~a._m00,~a._m10); }

@@ -36,7 +36,7 @@ public struct int4x2{
 	public static explicit operator int3x2(int4x2 m) { return new int3x2(m._m00, m._m01, m._m10, m._m11, m._m20, m._m21); }
 	public static explicit operator int4x1(int4x2 m) { return new int4x1(m._m00, m._m10, m._m20, m._m30); }
 	public static implicit operator int4x2(int v) { return new int4x2(v); }
-	public static explicit operator float4x2(int4x2 v) { return new float4x2((float)v._m00,(float)v._m01,(float)v._m10,(float)v._m11,(float)v._m20,(float)v._m21,(float)v._m30,(float)v._m31); }
+	public static implicit operator float4x2(int4x2 v) { return new float4x2((float)v._m00,(float)v._m01,(float)v._m10,(float)v._m11,(float)v._m20,(float)v._m21,(float)v._m30,(float)v._m31); }
 	public static int4x2 operator -(int4x2 a) { return new int4x2(-a._m00,-a._m01,-a._m10,-a._m11,-a._m20,-a._m21,-a._m30,-a._m31); }
 	public static int4x2 operator +(int4x2 a) { return new int4x2(+a._m00,+a._m01,+a._m10,+a._m11,+a._m20,+a._m21,+a._m30,+a._m31); }
 	public static int4x2 operator ~(int4x2 a) { return new int4x2(~a._m00,~a._m01,~a._m10,~a._m11,~a._m20,~a._m21,~a._m30,~a._m31); }

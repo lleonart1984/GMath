@@ -399,34 +399,34 @@ public static partial class Gfx {
 
 
 	#region length
-	public static float1 length(float1 v) { return (float)Math.Sqrt(dot(v, v)); }
-	public static float2 length(float2 v) { return (float)Math.Sqrt(dot(v, v)); }
-	public static float3 length(float3 v) { return (float)Math.Sqrt(dot(v, v)); }
-	public static float4 length(float4 v) { return (float)Math.Sqrt(dot(v, v)); }
+	public static float length(float1 v) { return (float)Math.Sqrt(dot(v, v)); }
+	public static float length(float2 v) { return (float)Math.Sqrt(dot(v, v)); }
+	public static float length(float3 v) { return (float)Math.Sqrt(dot(v, v)); }
+	public static float length(float4 v) { return (float)Math.Sqrt(dot(v, v)); }
 	#endregion
 
 
 	#region sqrlength
-	public static float1 sqrlength(float1 v) { return dot(v, v); }
-	public static float2 sqrlength(float2 v) { return dot(v, v); }
-	public static float3 sqrlength(float3 v) { return dot(v, v); }
-	public static float4 sqrlength(float4 v) { return dot(v, v); }
+	public static float sqrlength(float1 v) { return dot(v, v); }
+	public static float sqrlength(float2 v) { return dot(v, v); }
+	public static float sqrlength(float3 v) { return dot(v, v); }
+	public static float sqrlength(float4 v) { return dot(v, v); }
 	#endregion
 
 
 	#region distance
-	public static float1 distance(float1 a, float1 b) { return length(a - b); }
-	public static float2 distance(float2 a, float2 b) { return length(a - b); }
-	public static float3 distance(float3 a, float3 b) { return length(a - b); }
-	public static float4 distance(float4 a, float4 b) { return length(a - b); }
+	public static float distance(float1 a, float1 b) { return length(a - b); }
+	public static float distance(float2 a, float2 b) { return length(a - b); }
+	public static float distance(float3 a, float3 b) { return length(a - b); }
+	public static float distance(float4 a, float4 b) { return length(a - b); }
 	#endregion
 
 
 	#region sqrdistance
-	public static float1 sqrdistance(float1 a, float1 b) { return sqrlength(a - b); }
-	public static float2 sqrdistance(float2 a, float2 b) { return sqrlength(a - b); }
-	public static float3 sqrdistance(float3 a, float3 b) { return sqrlength(a - b); }
-	public static float4 sqrdistance(float4 a, float4 b) { return sqrlength(a - b); }
+	public static float sqrdistance(float1 a, float1 b) { return sqrlength(a - b); }
+	public static float sqrdistance(float2 a, float2 b) { return sqrlength(a - b); }
+	public static float sqrdistance(float3 a, float3 b) { return sqrlength(a - b); }
+	public static float sqrdistance(float4 a, float4 b) { return sqrlength(a - b); }
 	#endregion
 
 
@@ -912,29 +912,29 @@ public static partial class Gfx {
 
 
 	#region sign
-	public static float sign(float v) { return (float)Math.Sign(v); }
+	public static int sign(int v) { return (int)Math.Sign(v); }
 
-	public static float1 sign(float1 v) { return new float1((float)Math.Sign(v.x)); }
-	public static float2 sign(float2 v) { return new float2((float)Math.Sign(v.x), (float)Math.Sign(v.y)); }
-	public static float3 sign(float3 v) { return new float3((float)Math.Sign(v.x), (float)Math.Sign(v.y), (float)Math.Sign(v.z)); }
-	public static float4 sign(float4 v) { return new float4((float)Math.Sign(v.x), (float)Math.Sign(v.y), (float)Math.Sign(v.z), (float)Math.Sign(v.w)); }
+	public static int1 sign(int1 v) { return new int1((int)Math.Sign(v.x)); }
+	public static int2 sign(int2 v) { return new int2((int)Math.Sign(v.x), (int)Math.Sign(v.y)); }
+	public static int3 sign(int3 v) { return new int3((int)Math.Sign(v.x), (int)Math.Sign(v.y), (int)Math.Sign(v.z)); }
+	public static int4 sign(int4 v) { return new int4((int)Math.Sign(v.x), (int)Math.Sign(v.y), (int)Math.Sign(v.z), (int)Math.Sign(v.w)); }
 
-	public static float1x1 sign(float1x1 v) { return new float1x1((float)Math.Sign(v._m00)); }
-	public static float1x2 sign(float1x2 v) { return new float1x2((float)Math.Sign(v._m00), (float)Math.Sign(v._m01)); }
-	public static float1x3 sign(float1x3 v) { return new float1x3((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m02)); }
-	public static float1x4 sign(float1x4 v) { return new float1x4((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m02), (float)Math.Sign(v._m03)); }
-	public static float2x1 sign(float2x1 v) { return new float2x1((float)Math.Sign(v._m00), (float)Math.Sign(v._m10)); }
-	public static float2x2 sign(float2x2 v) { return new float2x2((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m10), (float)Math.Sign(v._m11)); }
-	public static float2x3 sign(float2x3 v) { return new float2x3((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m02), (float)Math.Sign(v._m10), (float)Math.Sign(v._m11), (float)Math.Sign(v._m12)); }
-	public static float2x4 sign(float2x4 v) { return new float2x4((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m02), (float)Math.Sign(v._m03), (float)Math.Sign(v._m10), (float)Math.Sign(v._m11), (float)Math.Sign(v._m12), (float)Math.Sign(v._m13)); }
-	public static float3x1 sign(float3x1 v) { return new float3x1((float)Math.Sign(v._m00), (float)Math.Sign(v._m10), (float)Math.Sign(v._m20)); }
-	public static float3x2 sign(float3x2 v) { return new float3x2((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m10), (float)Math.Sign(v._m11), (float)Math.Sign(v._m20), (float)Math.Sign(v._m21)); }
-	public static float3x3 sign(float3x3 v) { return new float3x3((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m02), (float)Math.Sign(v._m10), (float)Math.Sign(v._m11), (float)Math.Sign(v._m12), (float)Math.Sign(v._m20), (float)Math.Sign(v._m21), (float)Math.Sign(v._m22)); }
-	public static float3x4 sign(float3x4 v) { return new float3x4((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m02), (float)Math.Sign(v._m03), (float)Math.Sign(v._m10), (float)Math.Sign(v._m11), (float)Math.Sign(v._m12), (float)Math.Sign(v._m13), (float)Math.Sign(v._m20), (float)Math.Sign(v._m21), (float)Math.Sign(v._m22), (float)Math.Sign(v._m23)); }
-	public static float4x1 sign(float4x1 v) { return new float4x1((float)Math.Sign(v._m00), (float)Math.Sign(v._m10), (float)Math.Sign(v._m20), (float)Math.Sign(v._m30)); }
-	public static float4x2 sign(float4x2 v) { return new float4x2((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m10), (float)Math.Sign(v._m11), (float)Math.Sign(v._m20), (float)Math.Sign(v._m21), (float)Math.Sign(v._m30), (float)Math.Sign(v._m31)); }
-	public static float4x3 sign(float4x3 v) { return new float4x3((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m02), (float)Math.Sign(v._m10), (float)Math.Sign(v._m11), (float)Math.Sign(v._m12), (float)Math.Sign(v._m20), (float)Math.Sign(v._m21), (float)Math.Sign(v._m22), (float)Math.Sign(v._m30), (float)Math.Sign(v._m31), (float)Math.Sign(v._m32)); }
-	public static float4x4 sign(float4x4 v) { return new float4x4((float)Math.Sign(v._m00), (float)Math.Sign(v._m01), (float)Math.Sign(v._m02), (float)Math.Sign(v._m03), (float)Math.Sign(v._m10), (float)Math.Sign(v._m11), (float)Math.Sign(v._m12), (float)Math.Sign(v._m13), (float)Math.Sign(v._m20), (float)Math.Sign(v._m21), (float)Math.Sign(v._m22), (float)Math.Sign(v._m23), (float)Math.Sign(v._m30), (float)Math.Sign(v._m31), (float)Math.Sign(v._m32), (float)Math.Sign(v._m33)); }
+	public static int1x1 sign(int1x1 v) { return new int1x1((int)Math.Sign(v._m00)); }
+	public static int1x2 sign(int1x2 v) { return new int1x2((int)Math.Sign(v._m00), (int)Math.Sign(v._m01)); }
+	public static int1x3 sign(int1x3 v) { return new int1x3((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m02)); }
+	public static int1x4 sign(int1x4 v) { return new int1x4((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m02), (int)Math.Sign(v._m03)); }
+	public static int2x1 sign(int2x1 v) { return new int2x1((int)Math.Sign(v._m00), (int)Math.Sign(v._m10)); }
+	public static int2x2 sign(int2x2 v) { return new int2x2((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m10), (int)Math.Sign(v._m11)); }
+	public static int2x3 sign(int2x3 v) { return new int2x3((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m02), (int)Math.Sign(v._m10), (int)Math.Sign(v._m11), (int)Math.Sign(v._m12)); }
+	public static int2x4 sign(int2x4 v) { return new int2x4((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m02), (int)Math.Sign(v._m03), (int)Math.Sign(v._m10), (int)Math.Sign(v._m11), (int)Math.Sign(v._m12), (int)Math.Sign(v._m13)); }
+	public static int3x1 sign(int3x1 v) { return new int3x1((int)Math.Sign(v._m00), (int)Math.Sign(v._m10), (int)Math.Sign(v._m20)); }
+	public static int3x2 sign(int3x2 v) { return new int3x2((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m10), (int)Math.Sign(v._m11), (int)Math.Sign(v._m20), (int)Math.Sign(v._m21)); }
+	public static int3x3 sign(int3x3 v) { return new int3x3((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m02), (int)Math.Sign(v._m10), (int)Math.Sign(v._m11), (int)Math.Sign(v._m12), (int)Math.Sign(v._m20), (int)Math.Sign(v._m21), (int)Math.Sign(v._m22)); }
+	public static int3x4 sign(int3x4 v) { return new int3x4((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m02), (int)Math.Sign(v._m03), (int)Math.Sign(v._m10), (int)Math.Sign(v._m11), (int)Math.Sign(v._m12), (int)Math.Sign(v._m13), (int)Math.Sign(v._m20), (int)Math.Sign(v._m21), (int)Math.Sign(v._m22), (int)Math.Sign(v._m23)); }
+	public static int4x1 sign(int4x1 v) { return new int4x1((int)Math.Sign(v._m00), (int)Math.Sign(v._m10), (int)Math.Sign(v._m20), (int)Math.Sign(v._m30)); }
+	public static int4x2 sign(int4x2 v) { return new int4x2((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m10), (int)Math.Sign(v._m11), (int)Math.Sign(v._m20), (int)Math.Sign(v._m21), (int)Math.Sign(v._m30), (int)Math.Sign(v._m31)); }
+	public static int4x3 sign(int4x3 v) { return new int4x3((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m02), (int)Math.Sign(v._m10), (int)Math.Sign(v._m11), (int)Math.Sign(v._m12), (int)Math.Sign(v._m20), (int)Math.Sign(v._m21), (int)Math.Sign(v._m22), (int)Math.Sign(v._m30), (int)Math.Sign(v._m31), (int)Math.Sign(v._m32)); }
+	public static int4x4 sign(int4x4 v) { return new int4x4((int)Math.Sign(v._m00), (int)Math.Sign(v._m01), (int)Math.Sign(v._m02), (int)Math.Sign(v._m03), (int)Math.Sign(v._m10), (int)Math.Sign(v._m11), (int)Math.Sign(v._m12), (int)Math.Sign(v._m13), (int)Math.Sign(v._m20), (int)Math.Sign(v._m21), (int)Math.Sign(v._m22), (int)Math.Sign(v._m23), (int)Math.Sign(v._m30), (int)Math.Sign(v._m31), (int)Math.Sign(v._m32), (int)Math.Sign(v._m33)); }
 
 	#endregion
 
@@ -1163,35 +1163,67 @@ public static partial class Gfx {
 
 	public static float1x1 float1x1(float _m00) { return new float1x1(_m00); }
 
+	public static float1x1 float1x1(float1 r0) { return new float1x1(r0.x); }
+
 	public static float1x2 float1x2(float _m00, float _m01) { return new float1x2(_m00, _m01); }
+
+	public static float1x2 float1x2(float2 r0) { return new float1x2(r0.x, r0.y); }
 
 	public static float1x3 float1x3(float _m00, float _m01, float _m02) { return new float1x3(_m00, _m01, _m02); }
 
+	public static float1x3 float1x3(float3 r0) { return new float1x3(r0.x, r0.y, r0.z); }
+
 	public static float1x4 float1x4(float _m00, float _m01, float _m02, float _m03) { return new float1x4(_m00, _m01, _m02, _m03); }
+
+	public static float1x4 float1x4(float4 r0) { return new float1x4(r0.x, r0.y, r0.z, r0.w); }
 
 	public static float2x1 float2x1(float _m00, float _m10) { return new float2x1(_m00, _m10); }
 
+	public static float2x1 float2x1(float1 r0, float1 r1) { return new float2x1(r0.x, r1.x); }
+
 	public static float2x2 float2x2(float _m00, float _m01, float _m10, float _m11) { return new float2x2(_m00, _m01, _m10, _m11); }
+
+	public static float2x2 float2x2(float2 r0, float2 r1) { return new float2x2(r0.x, r0.y, r1.x, r1.y); }
 
 	public static float2x3 float2x3(float _m00, float _m01, float _m02, float _m10, float _m11, float _m12) { return new float2x3(_m00, _m01, _m02, _m10, _m11, _m12); }
 
+	public static float2x3 float2x3(float3 r0, float3 r1) { return new float2x3(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z); }
+
 	public static float2x4 float2x4(float _m00, float _m01, float _m02, float _m03, float _m10, float _m11, float _m12, float _m13) { return new float2x4(_m00, _m01, _m02, _m03, _m10, _m11, _m12, _m13); }
+
+	public static float2x4 float2x4(float4 r0, float4 r1) { return new float2x4(r0.x, r0.y, r0.z, r0.w, r1.x, r1.y, r1.z, r1.w); }
 
 	public static float3x1 float3x1(float _m00, float _m10, float _m20) { return new float3x1(_m00, _m10, _m20); }
 
+	public static float3x1 float3x1(float1 r0, float1 r1, float1 r2) { return new float3x1(r0.x, r1.x, r2.x); }
+
 	public static float3x2 float3x2(float _m00, float _m01, float _m10, float _m11, float _m20, float _m21) { return new float3x2(_m00, _m01, _m10, _m11, _m20, _m21); }
+
+	public static float3x2 float3x2(float2 r0, float2 r1, float2 r2) { return new float3x2(r0.x, r0.y, r1.x, r1.y, r2.x, r2.y); }
 
 	public static float3x3 float3x3(float _m00, float _m01, float _m02, float _m10, float _m11, float _m12, float _m20, float _m21, float _m22) { return new float3x3(_m00, _m01, _m02, _m10, _m11, _m12, _m20, _m21, _m22); }
 
+	public static float3x3 float3x3(float3 r0, float3 r1, float3 r2) { return new float3x3(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z); }
+
 	public static float3x4 float3x4(float _m00, float _m01, float _m02, float _m03, float _m10, float _m11, float _m12, float _m13, float _m20, float _m21, float _m22, float _m23) { return new float3x4(_m00, _m01, _m02, _m03, _m10, _m11, _m12, _m13, _m20, _m21, _m22, _m23); }
+
+	public static float3x4 float3x4(float4 r0, float4 r1, float4 r2) { return new float3x4(r0.x, r0.y, r0.z, r0.w, r1.x, r1.y, r1.z, r1.w, r2.x, r2.y, r2.z, r2.w); }
 
 	public static float4x1 float4x1(float _m00, float _m10, float _m20, float _m30) { return new float4x1(_m00, _m10, _m20, _m30); }
 
+	public static float4x1 float4x1(float1 r0, float1 r1, float1 r2, float1 r3) { return new float4x1(r0.x, r1.x, r2.x, r3.x); }
+
 	public static float4x2 float4x2(float _m00, float _m01, float _m10, float _m11, float _m20, float _m21, float _m30, float _m31) { return new float4x2(_m00, _m01, _m10, _m11, _m20, _m21, _m30, _m31); }
+
+	public static float4x2 float4x2(float2 r0, float2 r1, float2 r2, float2 r3) { return new float4x2(r0.x, r0.y, r1.x, r1.y, r2.x, r2.y, r3.x, r3.y); }
 
 	public static float4x3 float4x3(float _m00, float _m01, float _m02, float _m10, float _m11, float _m12, float _m20, float _m21, float _m22, float _m30, float _m31, float _m32) { return new float4x3(_m00, _m01, _m02, _m10, _m11, _m12, _m20, _m21, _m22, _m30, _m31, _m32); }
 
+	public static float4x3 float4x3(float3 r0, float3 r1, float3 r2, float3 r3) { return new float4x3(r0.x, r0.y, r0.z, r1.x, r1.y, r1.z, r2.x, r2.y, r2.z, r3.x, r3.y, r3.z); }
+
 	public static float4x4 float4x4(float _m00, float _m01, float _m02, float _m03, float _m10, float _m11, float _m12, float _m13, float _m20, float _m21, float _m22, float _m23, float _m30, float _m31, float _m32, float _m33) { return new float4x4(_m00, _m01, _m02, _m03, _m10, _m11, _m12, _m13, _m20, _m21, _m22, _m23, _m30, _m31, _m32, _m33); }
+
+	public static float4x4 float4x4(float4 r0, float4 r1, float4 r2, float4 r3) { return new float4x4(r0.x, r0.y, r0.z, r0.w, r1.x, r1.y, r1.z, r1.w, r2.x, r2.y, r2.z, r2.w, r3.x, r3.y, r3.z, r3.w); }
 
 	#endregion
 

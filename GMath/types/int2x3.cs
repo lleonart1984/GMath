@@ -28,7 +28,7 @@ public struct int2x3{
 	public static explicit operator int2x1(int2x3 m) { return new int2x1(m._m00, m._m10); }
 	public static explicit operator int2x2(int2x3 m) { return new int2x2(m._m00, m._m01, m._m10, m._m11); }
 	public static implicit operator int2x3(int v) { return new int2x3(v); }
-	public static explicit operator float2x3(int2x3 v) { return new float2x3((float)v._m00,(float)v._m01,(float)v._m02,(float)v._m10,(float)v._m11,(float)v._m12); }
+	public static implicit operator float2x3(int2x3 v) { return new float2x3((float)v._m00,(float)v._m01,(float)v._m02,(float)v._m10,(float)v._m11,(float)v._m12); }
 	public static int2x3 operator -(int2x3 a) { return new int2x3(-a._m00,-a._m01,-a._m02,-a._m10,-a._m11,-a._m12); }
 	public static int2x3 operator +(int2x3 a) { return new int2x3(+a._m00,+a._m01,+a._m02,+a._m10,+a._m11,+a._m12); }
 	public static int2x3 operator ~(int2x3 a) { return new int2x3(~a._m00,~a._m01,~a._m02,~a._m10,~a._m11,~a._m12); }

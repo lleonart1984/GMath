@@ -38,7 +38,7 @@ public struct int3x3{
 	public static explicit operator int3x1(int3x3 m) { return new int3x1(m._m00, m._m10, m._m20); }
 	public static explicit operator int3x2(int3x3 m) { return new int3x2(m._m00, m._m01, m._m10, m._m11, m._m20, m._m21); }
 	public static implicit operator int3x3(int v) { return new int3x3(v); }
-	public static explicit operator float3x3(int3x3 v) { return new float3x3((float)v._m00,(float)v._m01,(float)v._m02,(float)v._m10,(float)v._m11,(float)v._m12,(float)v._m20,(float)v._m21,(float)v._m22); }
+	public static implicit operator float3x3(int3x3 v) { return new float3x3((float)v._m00,(float)v._m01,(float)v._m02,(float)v._m10,(float)v._m11,(float)v._m12,(float)v._m20,(float)v._m21,(float)v._m22); }
 	public static int3x3 operator -(int3x3 a) { return new int3x3(-a._m00,-a._m01,-a._m02,-a._m10,-a._m11,-a._m12,-a._m20,-a._m21,-a._m22); }
 	public static int3x3 operator +(int3x3 a) { return new int3x3(+a._m00,+a._m01,+a._m02,+a._m10,+a._m11,+a._m12,+a._m20,+a._m21,+a._m22); }
 	public static int3x3 operator ~(int3x3 a) { return new int3x3(~a._m00,~a._m01,~a._m02,~a._m10,~a._m11,~a._m12,~a._m20,~a._m21,~a._m22); }

@@ -22,7 +22,7 @@ public struct int2x2{
 	public static explicit operator int1x2(int2x2 m) { return new int1x2(m._m00, m._m01); }
 	public static explicit operator int2x1(int2x2 m) { return new int2x1(m._m00, m._m10); }
 	public static implicit operator int2x2(int v) { return new int2x2(v); }
-	public static explicit operator float2x2(int2x2 v) { return new float2x2((float)v._m00,(float)v._m01,(float)v._m10,(float)v._m11); }
+	public static implicit operator float2x2(int2x2 v) { return new float2x2((float)v._m00,(float)v._m01,(float)v._m10,(float)v._m11); }
 	public static int2x2 operator -(int2x2 a) { return new int2x2(-a._m00,-a._m01,-a._m10,-a._m11); }
 	public static int2x2 operator +(int2x2 a) { return new int2x2(+a._m00,+a._m01,+a._m10,+a._m11); }
 	public static int2x2 operator ~(int2x2 a) { return new int2x2(~a._m00,~a._m01,~a._m10,~a._m11); }

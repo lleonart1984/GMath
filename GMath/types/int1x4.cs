@@ -23,7 +23,7 @@ public struct int1x4{
 	public static explicit operator int1x2(int1x4 m) { return new int1x2(m._m00, m._m01); }
 	public static explicit operator int1x3(int1x4 m) { return new int1x3(m._m00, m._m01, m._m02); }
 	public static implicit operator int1x4(int v) { return new int1x4(v); }
-	public static explicit operator float1x4(int1x4 v) { return new float1x4((float)v._m00,(float)v._m01,(float)v._m02,(float)v._m03); }
+	public static implicit operator float1x4(int1x4 v) { return new float1x4((float)v._m00,(float)v._m01,(float)v._m02,(float)v._m03); }
 	public static int1x4 operator -(int1x4 a) { return new int1x4(-a._m00,-a._m01,-a._m02,-a._m03); }
 	public static int1x4 operator +(int1x4 a) { return new int1x4(+a._m00,+a._m01,+a._m02,+a._m03); }
 	public static int1x4 operator ~(int1x4 a) { return new int1x4(~a._m00,~a._m01,~a._m02,~a._m03); }

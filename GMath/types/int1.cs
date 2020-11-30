@@ -14,7 +14,7 @@ public struct int1{
 		this.x=x;
 	}
 	public static implicit operator int1(int v) { return new int1(v); }
-	public static explicit operator float1(int1 v) { return new float1((float)v.x); }
+	public static implicit operator float1(int1 v) { return new float1((float)v.x); }
 	public static int1 operator -(int1 a) { return new int1(-a.x); }
 	public static int1 operator +(int1 a) { return new int1(+a.x); }
 	public static int1 operator ~(int1 a) { return new int1(~a.x); }

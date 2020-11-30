@@ -20,7 +20,7 @@ public struct int3x1{
 	public static explicit operator int1x1(int3x1 m) { return new int1x1(m._m00); }
 	public static explicit operator int2x1(int3x1 m) { return new int2x1(m._m00, m._m10); }
 	public static implicit operator int3x1(int v) { return new int3x1(v); }
-	public static explicit operator float3x1(int3x1 v) { return new float3x1((float)v._m00,(float)v._m10,(float)v._m20); }
+	public static implicit operator float3x1(int3x1 v) { return new float3x1((float)v._m00,(float)v._m10,(float)v._m20); }
 	public static int3x1 operator -(int3x1 a) { return new int3x1(-a._m00,-a._m10,-a._m20); }
 	public static int3x1 operator +(int3x1 a) { return new int3x1(+a._m00,+a._m10,+a._m20); }
 	public static int3x1 operator ~(int3x1 a) { return new int3x1(~a._m00,~a._m10,~a._m20); }

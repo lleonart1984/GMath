@@ -80,6 +80,7 @@ namespace GMath
         }
 
         #endregion
+
         #region refract
 
         /// <summary>
@@ -98,6 +99,28 @@ namespace GMath
                 return new float3(0, 0, 0);
 
             return normalize(eta * I - N * (eta * cosAngle + (float)Math.Sqrt(delta)));
+        }
+
+        #endregion
+
+        #region ortho basis
+
+        public static float copysign(float f, float t)
+        {
+            return (float)Math.CopySign(f, t);
+        }
+
+        /// <summary>
+        /// Given a direction, creates two othonormal vectors to it.
+        /// From the paper: Building an Orthonormal Basis, Revisited, Tom Duff, et.al.
+        /// </summary>
+        public static void createOrthoBasis(float3 N, out float3 T, out float3 B)
+        {
+            float sign = copysign(1.0f, N.z);
+            float a = -1.0f / (sign + N.z);
+            float b = N.x * N.y * a;
+            T = float3(1.0f + sign * N.x * N.x * a, sign * b, -sign * N.x);
+            B = float3(b, sign + N.y * N.y * a, -N.y);
         }
 
         #endregion

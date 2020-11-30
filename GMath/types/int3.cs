@@ -26,7 +26,7 @@ public struct int3{
 	public static explicit operator int1(int3 v) { return new int1(v.x); }
 	public static explicit operator int2(int3 v) { return new int2(v.x, v.y); }
 	public static implicit operator int3(int v) { return new int3(v); }
-	public static explicit operator float3(int3 v) { return new float3((float)v.x,(float)v.y,(float)v.z); }
+	public static implicit operator float3(int3 v) { return new float3((float)v.x,(float)v.y,(float)v.z); }
 	public static int3 operator -(int3 a) { return new int3(-a.x,-a.y,-a.z); }
 	public static int3 operator +(int3 a) { return new int3(+a.x,+a.y,+a.z); }
 	public static int3 operator ~(int3 a) { return new int3(~a.x,~a.y,~a.z); }

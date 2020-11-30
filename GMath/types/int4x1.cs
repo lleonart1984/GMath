@@ -24,7 +24,7 @@ public struct int4x1{
 	public static explicit operator int2x1(int4x1 m) { return new int2x1(m._m00, m._m10); }
 	public static explicit operator int3x1(int4x1 m) { return new int3x1(m._m00, m._m10, m._m20); }
 	public static implicit operator int4x1(int v) { return new int4x1(v); }
-	public static explicit operator float4x1(int4x1 v) { return new float4x1((float)v._m00,(float)v._m10,(float)v._m20,(float)v._m30); }
+	public static implicit operator float4x1(int4x1 v) { return new float4x1((float)v._m00,(float)v._m10,(float)v._m20,(float)v._m30); }
 	public static int4x1 operator -(int4x1 a) { return new int4x1(-a._m00,-a._m10,-a._m20,-a._m30); }
 	public static int4x1 operator +(int4x1 a) { return new int4x1(+a._m00,+a._m10,+a._m20,+a._m30); }
 	public static int4x1 operator ~(int4x1 a) { return new int4x1(~a._m00,~a._m10,~a._m20,~a._m30); }
