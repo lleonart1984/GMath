@@ -31,10 +31,8 @@ namespace GMath
         /// </summary>
         public static float distanceP2L(float3 p, float3 a, float3 b)
         {
-            float3 closest;
-            return distanceP2L(p, a, b, out closest);
+            return distanceP2L(p, a, b, out float3 _);
         }
-
 
         /// <summary>
         /// Distance from point to ray (given by a position and direction)
@@ -52,8 +50,7 @@ namespace GMath
         /// </summary>
         public static float distanceP2R(float3 p, float3 pos, float3 dir)
         {
-            float3 closest;
-            return distanceP2R(p, pos, dir, out closest);
+            return distanceP2R(p, pos, dir, out float3 _);
         }
 
         /// <summary>
@@ -72,8 +69,7 @@ namespace GMath
         /// </summary>
         public static float distanceP2S(float3 p, float3 a, float3 b)
         {
-            float3 closest;
-            return distanceP2S(p, a, b, out closest);
+            return distanceP2S(p, a, b, out float3 _);
         }
 
         /// <summary>
@@ -90,8 +86,7 @@ namespace GMath
         /// </summary>
         public static float distanceP2X(float3 p, float3 P, float3 N)
         {
-            float3 closest;
-            return distanceP2X(p, P, N, out closest);
+            return distanceP2X(p, P, N, out float3 _);
         }
 
         /// <summary>
@@ -128,8 +123,7 @@ namespace GMath
         /// </summary>
         public static float distanceP2T(float3 p, float3 a, float3 b, float3 c)
         {
-            float3 closest;
-            return distanceP2T(p, a, b, c, out closest);
+            return distanceP2T(p, a, b, c, out float3 _);
         }
 
         /// <summary>
@@ -219,8 +213,7 @@ namespace GMath
         /// </summary>
         public static float distanceS2S(float3 a1, float3 b1, float3 a2, float3 b2)
         {
-            float3 closest1, closest2;
-            return distanceS2S(a1, b1, a2, b2, out closest1, out closest2);
+            return distanceS2S(a1, b1, a2, b2, out float3 _, out float3 _);
         }
 
         // TODO: Implement line to line, segment to line
@@ -287,8 +280,7 @@ namespace GMath
         /// </summary>
         public static float distanceS2T(float3 a, float3 b, float3 t1, float3 t2, float3 t3)
         {
-            float3 closest1, closest2;
-            return distanceS2T(a, b, t1, t2, t3, out closest1, out closest2);
+            return distanceS2T(a, b, t1, t2, t3, out float3 _, out float3 _);
         }
 
 

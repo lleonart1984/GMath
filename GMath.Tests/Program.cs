@@ -95,7 +95,6 @@ namespace GMath.Tests
             }
         }
 
-
         static void Test_ClosestSegInTriangle(float3 a, float3 b, float3 t1, float3 t2, float3 t3)
         {
             float closestDistance = distanceS2T(a, b, t1, t2, t3);

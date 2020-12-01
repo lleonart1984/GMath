@@ -6,6 +6,9 @@ namespace GMath
 {
     public static partial class GTools
     {
+        /// <summary>
+        /// Gets the barycentric coordinates for a point in a plane
+        /// </summary>
         public static float3 barycenter(float3 P, float3 t1, float3 t2, float3 t3)
         {
             float3 v0 = t2 - t1, v1 = t3 - t1, v2 = P - t1;
@@ -20,6 +23,9 @@ namespace GMath
             return float3(1 - v - w, v, w);
         }
 
+        /// <summary>
+        /// Gets the barycentric coordinates for a point in a line
+        /// </summary>
         public static float2 barycenter(float3 P, float3 a, float3 b)
         {
             float3 v = b - a;
