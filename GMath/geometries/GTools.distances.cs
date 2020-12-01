@@ -211,7 +211,7 @@ namespace GMath
             closest1 = a1 + (sc * u);
             closest2 = a2 + (tc * v);
 
-            return distanceP2P(a1, a2);   // return the closest distance
+            return distanceP2P(closest1, closest2);   // return the closest distance
         }
 
         /// <summary>
@@ -230,14 +230,56 @@ namespace GMath
         /// </summary>
         public static float distanceS2T(float3 a, float3 b, float3 t1, float3 t2, float3 t3, out float3 closest1, out float3 closest2)
         {
-            float3 N = normalize(cross(t3 - t1, t2 - t1));
-            float3 P = t1;
+            // Assume is in an edge of the triangle
+            float distance = distanceP2P(a, t1);
+            closest1 = a; closest2 = t1;
 
-            float alpha = saturate((dot(P, N) - dot(a, N)) / dot(b - a, N));
+            float3 cl1, cl2;
+            float d;
+            
+            d = distanceS2S(a, b, t1, t2, out cl1, out cl2);
+            if (d < distance)
+            {
+                closest1 = cl1;
+                closest2 = cl2;
+                distance = d;
+            }
 
-            closest1 = lerp(a, b, alpha);
+            d = distanceS2S(a, b, t2, t3, out cl1, out cl2);
+            if (d < distance)
+            {
+                closest1 = cl1;
+                closest2 = cl2;
+                distance = d;
+            }
 
-            return distanceP2T(closest1, t1, t2, t3, out closest2);
+            d = distanceS2S(a, b, t3, t1, out cl1, out cl2);
+            if (d < distance)
+            {
+                closest1 = cl1;
+                closest2 = cl2;
+                distance = d;
+            }
+
+            // Assume is an interior point
+
+            d = distanceP2T(a, t1, t2, t3, out cl2);
+            if (d < distance)
+            {
+                closest1 = a;
+                closest2 = cl2;
+                distance = d;
+            }
+
+            d = distanceP2T(b, t1, t2, t3, out cl2);
+            if (d < distance)
+            {
+                closest1 = b;
+                closest2 = cl2;
+                distance = d;
+            }
+
+            return distance;
         }
 
         /// <summary>
@@ -250,6 +292,35 @@ namespace GMath
         }
 
 
+        /// <summary>
+        /// Distance from a quad C, C+U, C+U+R, C+R to a triangle
+        /// </summary>
+        public static float distanceQ2T(float3 C, float3 U, float3 R, float3 N, float3 t1, float3 t2, float3 t3)
+        {
+            float3 p00 = C;
+            float3 p01 = C + R;
+            float3 p10 = C + U;
+            float3 p11 = C + U + R;
 
+            float3[] ed = new float3[] { p00, p01, p11, p10 };
+
+            float dist = 1000000;
+            for (int i = 0; i < 4; i++) // Assume, the closest point is in an edge.
+                dist = min(dist, distanceS2T(ed[i], ed[(i + 1) % 4], t1, t2, t3));
+
+            float3[] t = new float3[] { t1, t2, t3 };
+            for (int i = 0; i < 3; i++) // Assume the closest point is inside, i.e. a vertex of the triangle
+            {
+                // Project t[i] on plane C, N
+                float3 tp;
+                distanceP2X(t[i], C, N, out tp);
+                float cx = dot(tp - C, R);
+                float cy = dot(tp - C, U);
+                if (cx >= 0 && cy >= 0 && cx <= 1 && cy <= 1) // inside side
+                    dist = min(dist, distanceP2T(tp, t1, t2, t3));
+            }
+
+            return dist;
+        }
     }
 }
